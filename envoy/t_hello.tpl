@@ -3,7 +3,7 @@
 
 <head>
     <title></title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/paper/bootstrap.min.css" rel="stylesheet">
+    <link href="https://bootswatch.com/4/cyborg/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
         .vertical-center {
             min-height: 100%;
