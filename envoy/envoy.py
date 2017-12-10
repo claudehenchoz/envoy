@@ -25,7 +25,9 @@ def process():
 
     if clear_entry:
         parsed_url = urlparse(clear_entry.data)
-        print parsed_url
+
+        real_filename = parsed_url.path.split('/')[-1].strip()
+
         if parsed_url.scheme:
             filename = rstr.rstr('abcdef0123456789', 8, 12)
             try:
@@ -47,7 +49,8 @@ def process():
             stream.close()
             os.remove(filename)
 
-            return template("t_video", crypt_filename=crypt_filename)
+            return template("t_video", crypt_filename=crypt_filename,
+                            real_filename=real_filename)
 
         else:
             abort(401, "Not bad, you're almost there")
