@@ -1,10 +1,16 @@
+from flask import Flask
+from flask import render_template
+from flask import request
+from flask import send_from_directory
+
 import os
-from bottle import route, run, request, abort, static_file, template
 from urllib import urlretrieve
 from urlparse import urlparse
 from shutil import move
 import gnupg
 import rstr
+
+
 
 passphrase = 'changeme'
 file_ext = '.webm'
@@ -12,28 +18,34 @@ file_ext = '.webm'
 gpg = gnupg.GPG()
 
 
-@route('/')
+app = Flask(__name__)
+
+
+@app.route("/")
 def hello():
-    return template("t_hello")
+    return "Hello World!"
 
+@app.route("/<path:url>")
+def url(url):
+    return render_template('url.html')
 
-@route('/video', method='POST')
-def process():
+@app.route('/dl', methods=['POST'])
+def dl():
+    if request.method == 'POST':
 
-    entry = request.forms.get('entry')
-    clear_entry = gpg.decrypt(entry, passphrase=passphrase)
+        desturl = request.form["desturl"]
 
-    if clear_entry:
-        parsed_url = urlparse(clear_entry.data)
+        parsed_url = urlparse(desturl)
 
         real_filename = parsed_url.path.split('/')[-1].strip()
 
         if parsed_url.scheme:
             filename = rstr.rstr('abcdef0123456789', 8, 12)
             try:
-                urlretrieve(clear_entry.data, filename)
+                urlretrieve(desturl, filename)
             except:
-                abort(401, "Something went wrong")
+                #abort(401, "Something went wrong")
+                pass
 
             crypt_filename = filename + file_ext
             stream = open(filename, "rb")
@@ -43,25 +55,20 @@ def process():
                                  recipients=None, symmetric='AES256',
                                  output=crypt_filename, armor=False)
             except:
-                abort(401, "Something went wrong")
+                #abort(401, "Something went wrong")
+                pass
 
             move(crypt_filename, 'video')
             stream.close()
             os.remove(filename)
 
-            return template("t_video", crypt_filename=crypt_filename,
+            return render_template("download.html", crypt_filename=crypt_filename,
                             real_filename=real_filename)
 
-        else:
-            abort(401, "Not bad, you're almost there")
-
+        return "Hello World! " + desturl
     else:
-        abort(401, "Nice try")
+        return "error"
 
-
-@route('/video/<filename>', method='GET')
-def server_static(filename):
-    return static_file(filename, root='video')
-
-
-run(host='0.0.0.0', port=62266, debug=False, server='paste')
+@app.route("/video/<path:path>")
+def video(path):
+    return send_from_directory('video', path)
