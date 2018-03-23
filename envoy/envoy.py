@@ -23,7 +23,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    return "Hello World!"
+    return render_template('url.html')
 
 @app.route("/<path:url>")
 def url(url):
@@ -65,7 +65,7 @@ def dl():
             return render_template("download.html", crypt_filename=crypt_filename,
                             real_filename=real_filename)
 
-        return "Hello World! " + desturl
+        return "This is not a URL: " + desturl
     else:
         return "error"
 

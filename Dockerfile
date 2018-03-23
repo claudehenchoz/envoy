@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 # Update/Upgrade/Cleansing
 RUN apt-get update && \
-    apt-get install -yq --no-install-recommends python-bottle python-gnupg python-rstr python-paste gnupg2 ca-certificates && \
+    apt-get install -yq --no-install-recommends python-flask python-gnupg python-rstr python-paste gnupg2 ca-certificates && \
     apt-get clean -y && \
     apt-get autoclean -y && \
     apt-get autoremove -y && \
@@ -16,7 +16,10 @@ RUN apt-get update && \
 
 ADD envoy envoy
 
-EXPOSE 62266
+EXPOSE 5000
+
+ENV FLASK_APP=envoy.py
 
 WORKDIR envoy
-CMD ["python", "envoy.py"]
+
+CMD ["python", "-m", "flask", "run", "--host=0.0.0.0"]

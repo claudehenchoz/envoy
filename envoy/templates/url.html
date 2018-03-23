@@ -1,20 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>flenvoy</title>
-
-</head>
-<body>
-    <form action="/dl" method="post">
-        <input type="text" name="desturl" id="desturl" value="">
-        <button type="submit">Get</button>
-    </form>
-    <script>
-        url = window.location.href.replace(/(^\w+:|^)\/\/[^\/]*\//, '');
-        document.getElementById('desturl').value=url;
-    </script>
-</body>
-</html>
+{% extends "layout.html" %}
+{% block body %}
+<form action="/dl" method="post">
+    <div class="form-group">
+        <label for="desturl">URL to download</label>
+        <input type="text" class="form-control" name="desturl" id="desturl" placeholder="Enter a URL...">
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+</form>
+<script>
+    url = window.location.href.replace(/(^\w+:|^)\/\/[^\/]*\//, '');
+    document.getElementById('desturl').value = url;
+</script>
+{% endblock %}
