@@ -1,16 +1,9 @@
-{% extends "layout.html" %}
-
-{% block body %}
-
-<div class="container">
-<!-- <a class="btn btn-primary btn-lg active" role="button" download="{{crypt_filename}}" href="video/{{crypt_filename}}">
-    <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> {{crypt_filename}}
-</a> -->
-
-<p>
-    <pre><code>$a="{{crypt_filename}}";iwr "http://127.0.0.1:5000/video/$a" -outfile "$a";gpg --output "{{real_filename}}" --passphrase "changeme" --batch --decrypt "$a";rm "$a"</code></pre>
-</p>
-
-</div>
-
+{% extends "layout.html" %} {% block body %}
+    <label for="code">Paste into PowerShell to retrieve <i>{{real_filename}}</i></label>
+    <input type="text" class="form-control" name="code" id="code" value='$a="{{crypt_filename}}";iwr "https://z4.io/video/$a" -outfile "$a";gpg --output "{{real_filename}}" --passphrase "changeme" --batch --decrypt "$a";rm "$a"' readonly>
+    <script>
+        document.getElementById("code").focus();
+        document.getElementById("code").select();
+        document.getElementById("code").execCommand("Copy");
+    </script>
 {% endblock %}
