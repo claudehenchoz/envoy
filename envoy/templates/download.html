@@ -1,6 +1,6 @@
 {% extends "layout.html" %} {% block body %}
     <label for="code">Paste into PowerShell to retrieve <i>{{real_filename}}</i></label>
-    <input type="text" class="form-control" name="code" id="code" value='$a="{{crypt_filename}}";iwr "https://z4.io/video/$a" -outfile "$a";gpg --output "{{real_filename}}" --passphrase "changeme" --batch --decrypt "$a";rm "$a"' readonly>
+    <input type="text" class="form-control" name="code" id="code" value='$a="{{crypt_filename}}";iwr "https://z4.io/d/$a" -outfile "$a";gpg --output "{{real_filename}}" --passphrase "changeme" --batch --decrypt "$a";rm "$a"' readonly>
     <script>
         document.getElementById("code").focus();
         document.getElementById("code").select();

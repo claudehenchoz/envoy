@@ -23,14 +23,14 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    return render_template('url.html')
+    return render_template('get.html')
 
 @app.route("/<path:url>")
 def url(url):
-    return render_template('url.html')
+    return render_template('get.html')
 
-@app.route('/dl', methods=['POST'])
-def dl():
+@app.route('/g', methods=['POST'])
+def g():
     if request.method == 'POST':
 
         desturl = request.form["desturl"]
@@ -58,7 +58,7 @@ def dl():
                 #abort(401, "Something went wrong")
                 pass
 
-            move(crypt_filename, 'video')
+            move(crypt_filename, 'download')
             stream.close()
             os.remove(filename)
 
@@ -69,6 +69,6 @@ def dl():
     else:
         return "error"
 
-@app.route("/video/<path:path>")
-def video(path):
-    return send_from_directory('video', path)
+@app.route("/d/<path:path>")
+def download(path):
+    return send_from_directory('download', path)
